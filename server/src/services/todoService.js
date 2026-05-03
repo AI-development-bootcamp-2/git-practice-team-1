@@ -68,5 +68,32 @@ export const todoService = {
     todos.splice(index, 1);
     writeTodos(todos);
     return true;
+  },
+
+  getStats() {
+    const currentTodos = readTodos();
+    const byStatus = { todo: 0, 'in-progress': 0, review: 0, done: 0 };
+    const createdByDate = {};
+
+    currentTodos.forEach(todo => {
+      // Count status
+      if (byStatus[todo.status] !== undefined) {
+        byStatus[todo.status]++;
+      }
+
+      // Count by creation date (YYYY-MM-DD)
+      const dateStr = todo.createdAt.split('T')[0];
+      createdByDate[dateStr] = (createdByDate[dateStr] || 0) + 1;
+    });
+
+    const total = currentTodos.length;
+    const completionPercent = total > 0 ? Math.round((byStatus.done / total) * 100) : 0;
+
+    return {
+      total,
+      byStatus,
+      completionPercent,
+      createdByDate
+    };
   }
 };
