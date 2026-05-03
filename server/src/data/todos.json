@@ -28,5 +28,15 @@
     "tags": [],
     "createdAt": "2024-01-15T11:00:00.000Z",
     "updatedAt": "2024-01-15T11:00:00.000Z"
+  },
+  {
+    "id": "a287586f-5f29-4b35-b4fb-857990d6403d",
+    "title": "check add new task",
+    "status": "todo",
+    "priority": "medium",
+    "dueDate": null,
+    "tags": [],
+    "createdAt": "2026-05-03T11:55:57.246Z",
+    "updatedAt": "2026-05-03T11:55:57.246Z"
   }
 ]
