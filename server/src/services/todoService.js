@@ -134,5 +134,20 @@ export const todoService = {
       from: from ?? null,
       to: to ?? null,
     };
+  },
+
+  completeAll() {
+    const todos = readTodos();
+    const now = new Date().toISOString();
+    const updated = todos.map(todo => ({ ...todo, status: 'done', updatedAt: now }));
+    writeTodos(updated);
+    return updated;
+  },
+
+  deleteDone() {
+    const todos = readTodos();
+    const remaining = todos.filter(todo => todo.status !== 'done');
+    writeTodos(remaining);
+    return remaining;
   }
 };
