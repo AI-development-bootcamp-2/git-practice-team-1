@@ -106,7 +106,7 @@ function App() {
 
           <>
             
-            <BoardView todos={todos} />
+            <BoardView todos={todos} onTodosChange={setTodos} />
           </>
 
         )}
