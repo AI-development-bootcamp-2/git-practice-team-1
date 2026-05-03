@@ -39,6 +39,9 @@ async function buildApp() {
     put(path, handler) {
       handlers.set(`PUT ${path}`, handler);
     },
+    patch(path, handler) {
+      handlers.set(`PATCH ${path}`, handler);
+    },
     delete(path, handler) {
       handlers.set(`DELETE ${path}`, handler);
     },
