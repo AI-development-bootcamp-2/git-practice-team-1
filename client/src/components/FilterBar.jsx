@@ -59,6 +59,15 @@ function FilterBar({ filters, onFiltersChange }) {
           </option>
         ))}
       </select>
+
+      <label className="filter-checkbox">
+        <input
+          type="checkbox"
+          checked={filters.overdueOnly}
+          onChange={(e) => updateFilter('overdueOnly', e.target.checked)}
+        />
+        Show overdue only
+      </label>
     </div>
   );
 }

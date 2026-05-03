@@ -3,6 +3,7 @@ import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import FilterBar from './FilterBar';
+import { isTodoOverdue } from '../utils/todoDates';
 import '../App.css';
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
   const [filters, setFilters] = useState({
     search: '',
     status: 'all',
-    priority: 'all'
+    priority: 'all',
+    overdueOnly: false
   });
   const [view, setView] = useState('list');
 
@@ -73,8 +75,9 @@ function App() {
     const matchesSearch = !search || title.includes(search);
     const matchesStatus = filters.status === 'all' || status === filters.status;
     const matchesPriority = filters.priority === 'all' || priority === filters.priority;
+    const matchesOverdue = !filters.overdueOnly || isTodoOverdue(todo);
 
-    return matchesSearch && matchesStatus && matchesPriority;
+    return matchesSearch && matchesStatus && matchesPriority && matchesOverdue;
   });
 
   return (
