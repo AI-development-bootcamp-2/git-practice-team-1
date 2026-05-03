@@ -356,6 +356,23 @@ body {
   border-radius: 12px;
 }
 
+.board-column-over {
+  outline: 2px dashed #4361ee;
+  outline-offset: -2px;
+}
+
+.task-card-dragging {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  cursor: grabbing;
+  pointer-events: none;
+}
+
+.task-card-ghost {
+  opacity: 0.3;
+  border: 2px dashed #4361ee;
+  background: #f0f4ff;
+}
+
 /* === STATES === */
 .loading {
   text-align: center;
