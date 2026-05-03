@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+import BoardView from './BoardView';
 import '../App.css';
 
 function App() {
@@ -74,11 +75,10 @@ function App() {
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
-          <TodoList
-            todos={todos}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-          />
+          <>
+            
+            <BoardView todos={todos} />
+          </>
         )}
       </main>
     </div>
