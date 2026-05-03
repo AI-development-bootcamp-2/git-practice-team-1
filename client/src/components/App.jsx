@@ -3,6 +3,7 @@ import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import FilterBar from './FilterBar';
+import { isTodoOverdue } from '../utils/todoDates';
 import StatsPage from './StatsPage';
 import BoardView from './BoardView';
 import '../App.css';
@@ -11,10 +12,9 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filters, setFilters] = useState({ search: '', status: 'all', priority: 'all' });
+  const [filters, setFilters] = useState({ search: '', status: 'all', priority: 'all', overdueOnly: false });
   const [view, setView] = useState('list');
   const [currentView, setCurrentView] = useState('tasks');
-  // PERSON6 INTEGRATION: Person 5's overdue-only UI should filter this list before rendering.
 
   useEffect(() => {
     loadTodos();
@@ -72,7 +72,9 @@ function App() {
     const matchesSearch = !search || title.includes(search);
     const matchesStatus = filters.status === 'all' || status === filters.status;
     const matchesPriority = filters.priority === 'all' || priority === filters.priority;
-    return matchesSearch && matchesStatus && matchesPriority;
+    // PERSON6: overdue-only filter using isTodoOverdue from todoDates
+    const matchesOverdue = !filters.overdueOnly || isTodoOverdue(todo);
+    return matchesSearch && matchesStatus && matchesPriority && matchesOverdue;
   });
 
   const handleCompleteAll = async () => {

@@ -141,6 +141,83 @@ await runTest('getStats ignores invalid date filters instead of dropping all dat
   assert.equal(stats.todo, 1);
 });
 
+await runTest('getStats with no date filter returns all todos', async () => {
+  seedTodos([
+    {
+      id: 'a',
+      title: 'First',
+      status: 'todo',
+      dueDate: null,
+      createdAt: '2026-05-01T09:00:00.000Z',
+      updatedAt: '2026-05-01T09:00:00.000Z',
+    },
+    {
+      id: 'b',
+      title: 'Second',
+      status: 'done',
+      dueDate: null,
+      createdAt: '2026-05-02T09:00:00.000Z',
+      updatedAt: '2026-05-02T09:00:00.000Z',
+    },
+  ]);
+
+  const stats = todoService.getStats();
+
+  assert.equal(stats.total, 2);
+  assert.equal(stats.todo, 1);
+  assert.equal(stats.done, 1);
+  assert.equal(stats.from, null);
+  assert.equal(stats.to, null);
+});
+
+await runTest('getStats counts in-progress and review todos with past due dates as overdue', async () => {
+  seedTodos([
+    {
+      id: 'a',
+      title: 'In progress overdue',
+      status: 'in-progress',
+      dueDate: '2026-05-01T00:00:00.000Z',
+      createdAt: '2026-05-03T09:00:00.000Z',
+      updatedAt: '2026-05-03T09:00:00.000Z',
+    },
+    {
+      id: 'b',
+      title: 'Review overdue',
+      status: 'review',
+      dueDate: '2026-05-01T00:00:00.000Z',
+      createdAt: '2026-05-03T09:00:00.000Z',
+      updatedAt: '2026-05-03T09:00:00.000Z',
+    },
+  ]);
+
+  const stats = todoService.getStats();
+
+  assert.equal(stats.overdue, 2);
+});
+
+await runTest('update preserves dueDate when only title is changed', async () => {
+  seedTodos([]);
+  const created = todoService.create({
+    title: 'Original title',
+    dueDate: '2026-05-10T00:00:00.000Z',
+  });
+
+  const updated = todoService.update(created.id, { title: 'New title' });
+
+  assert.equal(updated.title, 'New title');
+  assert.equal(updated.dueDate, '2026-05-10T00:00:00.000Z');
+});
+
+await runTest('create sets default priority, tags, and status fields', async () => {
+  seedTodos([]);
+
+  const todo = todoService.create({ title: 'Default fields test' });
+
+  assert.equal(todo.status, 'todo');
+  assert.equal(todo.priority, 'medium');
+  assert.deepEqual(todo.tags, []);
+});
+
 await runTest('POST /api/todos creates a todo with a dueDate', async () => {
   seedTodos([]);
   const handlers = await buildApp();
