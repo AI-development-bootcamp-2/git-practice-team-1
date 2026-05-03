@@ -103,12 +103,16 @@ function App() {
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
-
           <>
-            
+            {/* PERSON6 INTEGRATION: TodoList must stay here so inline editing, toggle, and delete remain wired. */}
+            <TodoList
+              todos={todos}
+              onToggle={handleToggle}
+              onDelete={handleDelete}
+              onTitleSaved={handleTitleSaved}
+            />
             <BoardView todos={todos} />
           </>
-
         )}
       </main>
     </div>
