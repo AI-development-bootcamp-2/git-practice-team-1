@@ -3,6 +3,9 @@
     "id": "1",
     "title": "Learn Git basics",
     "status": "done",
+    "priority": "medium",
+    "dueDate": null,
+    "tags": [],
     "createdAt": "2024-01-15T09:00:00.000Z",
     "updatedAt": "2026-01-09T21:43:33.408Z"
   },
@@ -10,6 +13,9 @@
     "id": "2",
     "title": "Practice merge conflicts",
     "status": "todo",
+    "priority": "medium",
+    "dueDate": null,
+    "tags": [],
     "createdAt": "2024-01-15T10:00:00.000Z",
     "updatedAt": "2024-01-15T10:00:00.000Z"
   },
@@ -17,6 +23,9 @@
     "id": "3",
     "title": "Build awesome features",
     "status": "todo",
+    "priority": "medium",
+    "dueDate": null,
+    "tags": [],
     "createdAt": "2024-01-15T11:00:00.000Z",
     "updatedAt": "2024-01-15T11:00:00.000Z"
   }
