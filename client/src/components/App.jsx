@@ -33,9 +33,9 @@ function App() {
     }
   };
 
-  const handleAdd = async (title) => {
+  const handleAdd = async ({ title, dueDate }) => {
     try {
-      const newTodo = await api.todos.create(title);
+      const newTodo = await api.todos.create({ title, dueDate });
       setTodos([...todos, newTodo]);
     } catch (err) {
       setError(err.message);
@@ -49,6 +49,10 @@ function App() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleTitleSaved = (updatedTodo) => {
+    setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   };
 
   const handleDelete = async (id) => {
@@ -125,6 +129,7 @@ function App() {
                 todos={filteredTodos}
                 onStatusChange={handleStatusChange}
                 onDelete={handleDelete}
+                onTitleSaved={handleTitleSaved}
               />
             )}
           </>

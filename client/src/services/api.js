@@ -1,5 +1,18 @@
 const API_BASE = 'http://localhost:3001/api';
 
+function buildQuery(params = {}) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.set(key, value);
+    }
+  });
+
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
+}
+
 async function fetchApi(endpoint, options = {}) {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     headers: {
@@ -23,15 +36,18 @@ export const api = {
 
     getById: (id) => fetchApi(`/todos/${id}`),
 
-    create: (title) => fetchApi('/todos', {
+    create: ({ title, dueDate = null }) => fetchApi('/todos', {
       method: 'POST',
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({ title, dueDate }),
     }),
 
     update: (id, updates) => fetchApi(`/todos/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
     }),
+
+    // PERSON6 INTEGRATION: Person 3's stats page should call this with optional from/to query params.
+    getStats: ({ from, to } = {}) => fetchApi(`/todos/stats${buildQuery({ from, to })}`),
 
     delete: (id) => fetchApi(`/todos/${id}`, {
       method: 'DELETE',
