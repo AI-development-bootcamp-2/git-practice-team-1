@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 function AddTodo({ onAdd }) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
+  const [dueDate, setDueDate] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
