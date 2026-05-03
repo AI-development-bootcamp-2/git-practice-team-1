@@ -52,5 +52,13 @@ export const api = {
     delete: (id) => fetchApi(`/todos/${id}`, {
       method: 'DELETE',
     }),
+
+    completeAll: () => fetchApi('/todos/complete-all', {
+      method: 'PATCH',
+    }),
+
+    deleteDone: () => fetchApi('/todos/done', {
+      method: 'DELETE',
+    }),
   },
 };
