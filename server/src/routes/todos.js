@@ -14,6 +14,16 @@ export default async function todosRoutes(fastify, options) {
     return todoService.getAll();
   });
 
+  // PATCH /api/todos/complete-all - Mark all todos as done
+  fastify.patch('/complete-all', async (request, reply) => {
+    return todoService.completeAll();
+  });
+
+  // DELETE /api/todos/done - Delete all completed todos
+  fastify.delete('/done', async (request, reply) => {
+    return todoService.deleteDone();
+  });
+
   // GET /api/todos/:id - Get single todo
   fastify.get('/:id', async (request, reply) => {
     const todo = todoService.getById(request.params.id);

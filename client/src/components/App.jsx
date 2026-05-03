@@ -77,6 +77,24 @@ function App() {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
+  const handleCompleteAll = async () => {
+    try {
+      const updated = await api.todos.completeAll();
+      setTodos(updated);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteDone = async () => {
+    try {
+      const remaining = await api.todos.deleteDone();
+      setTodos(remaining);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="app">
       <header className="header">
@@ -85,6 +103,11 @@ function App() {
 
       <main className="main">
         <AddTodo onAdd={handleAdd} />
+
+        <div className="bulk-actions">
+          <button onClick={handleCompleteAll}>Mark All Done</button>
+          <button onClick={handleDeleteDone}>Clear Completed</button>
+        </div>
 
         {error && (
           <div className="error-message">
