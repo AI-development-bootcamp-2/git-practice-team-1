@@ -1,7 +1,14 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, onToggle, onDelete, onTitleSaved }) {
+const STATUS_SECTIONS = [
+  { value: 'todo', label: 'To Do' },
+  { value: 'in-progress', label: 'In Progress' },
+  { value: 'review', label: 'Review' },
+  { value: 'done', label: 'Done' }
+];
+
+function TodoList({ todos, onStatusChange, onDelete, onTitleSaved }) {
   if (todos.length === 0) {
     return (
       <div className="empty-state">
@@ -10,42 +17,28 @@ function TodoList({ todos, onToggle, onDelete, onTitleSaved }) {
     );
   }
 
-  const pendingTodos = todos.filter(t => t.status === 'todo');
-  const doneTodos = todos.filter(t => t.status === 'done');
-
   return (
     <div className="todo-list">
-      {pendingTodos.length > 0 && (
-        <section className="todo-section">
-          <h2>To Do ({pendingTodos.length})</h2>
-          {pendingTodos.map(todo => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={onToggle}
-              onDelete={onDelete}
-              // PERSON6 INTEGRATION: keep passing inline-edit save updates up to App when TodoList changes merge in.
-              onTitleSaved={onTitleSaved}
-            />
-          ))}
-        </section>
-      )}
+      {STATUS_SECTIONS.map(section => {
+        const sectionTodos = todos.filter(t => (t.status || 'todo') === section.value);
 
-      {doneTodos.length > 0 && (
-        <section className="todo-section">
-          <h2>Done ({doneTodos.length})</h2>
-          {doneTodos.map(todo => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={onToggle}
-              onDelete={onDelete}
-              // PERSON6 INTEGRATION: keep passing inline-edit save updates up to App when TodoList changes merge in.
-              onTitleSaved={onTitleSaved}
-            />
-          ))}
-        </section>
-      )}
+        if (sectionTodos.length === 0) return null;
+
+        return (
+          <section className="todo-section" key={section.value}>
+            <h2>{section.label} ({sectionTodos.length})</h2>
+            {sectionTodos.map(todo => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                onStatusChange={onStatusChange}
+                onDelete={onDelete}
+                onTitleSaved={onTitleSaved}
+              />
+            ))}
+          </section>
+        );
+      })}
     </div>
   );
 }
