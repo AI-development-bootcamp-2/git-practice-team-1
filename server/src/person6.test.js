@@ -112,6 +112,9 @@ await runTest('getStats filters by createdAt range and counts overdue pending to
     todo: 1,
     done: 1,
     overdue: 0,
+    byStatus: { todo: 1, 'in-progress': 0, review: 0, done: 1 },
+    completionPercent: 50,
+    createdByDate: { '2026-05-03': 1, '2026-05-04': 1 },
     from: '2026-05-03',
     to: '2026-05-04',
   });
@@ -236,6 +239,9 @@ await runTest('GET /api/todos/stats applies from and to filters to the stats res
     todo: 1,
     done: 0,
     overdue: 0,
+    byStatus: { todo: 1, 'in-progress': 0, review: 0, done: 0 },
+    completionPercent: 0,
+    createdByDate: { '2026-05-03': 1 },
     from: '2026-05-03',
     to: '2026-05-03',
   });
