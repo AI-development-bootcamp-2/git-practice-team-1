@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDraggable } from '@dnd-kit/core';
 
 const PRIORITY_LABELS = { high: 'High', medium: 'Medium', low: 'Low' };
 
@@ -7,11 +8,16 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-function TaskCard({ todo }) {
+function TaskCard({ todo, overlay = false }) {
   const { title, priority, dueDate, tags = [] } = todo;
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: todo.id });
 
   return (
-    <div className="task-card">
+    <div
+      ref={overlay ? undefined : setNodeRef}
+      className={`task-card${isDragging && !overlay ? ' task-card-ghost' : ''}${overlay ? ' task-card-dragging' : ''}`}
+      {...(overlay ? {} : { ...listeners, ...attributes })}
+    >
       <p className="task-card-title">{title}</p>
 
       <div className="task-card-meta">
