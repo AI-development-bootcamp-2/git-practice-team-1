@@ -12,6 +12,25 @@ const STATUS_COLORS = {
   'done': '#4caf50',
 };
 
+const PRIORITY_CONFIG = {
+  'high':   { icon: '!', color: '#f44336' },
+  'medium': { icon: '~', color: '#ffc107' },
+  'low':    { icon: '↓', color: '#9e9e9e' },
+};
+
+function PriorityIndicator({ priority }) {
+  const config = PRIORITY_CONFIG[priority];
+  if (!config) return null;
+  return (
+    <span
+      style={{ color: config.color, fontWeight: 700, marginRight: '6px', fontSize: '0.9rem' }}
+      aria-label={`Priority: ${priority}`}
+    >
+      {config.icon}
+    </span>
+  );
+}
+
 function StatusBadge({ status }) {
   const color = STATUS_COLORS[status] || '#9e9e9e';
   return (
@@ -69,6 +88,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
           />
         ) : (
           <span className="todo-title" onDoubleClick={startEditing} title="Double-click to edit">
+            <PriorityIndicator priority={todo.priority} />
             {todo.title}
           </span>
         )}
