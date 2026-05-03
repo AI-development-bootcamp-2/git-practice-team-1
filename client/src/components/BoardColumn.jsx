@@ -1,9 +1,15 @@
 import React from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import TaskCard from './TaskCard';
 
-function BoardColumn({ title, todos, colorClass }) {
+function BoardColumn({ id, title, todos, colorClass }) {
+  const { setNodeRef, isOver } = useDroppable({ id });
+
   return (
-    <div className={`board-column ${colorClass}`}>
+    <div
+      ref={setNodeRef}
+      className={`board-column ${colorClass}${isOver ? ' board-column-over' : ''}`}
+    >
       <div className="board-column-header">
         <span className="board-column-title">{title}</span>
         <span className="board-column-count">{todos.length}</span>
