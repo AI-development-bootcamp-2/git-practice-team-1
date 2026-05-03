@@ -12,6 +12,32 @@ const STATUS_COLORS = {
   'done': '#4caf50',
 };
 
+const TAG_COLORS = ['#6c63ff', '#e91e8c', '#00bcd4', '#43a047', '#fb8c00', '#e53935'];
+
+function TagChips({ tags }) {
+  if (!tags || tags.length === 0) return null;
+  return (
+    <div className="tag-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+      {tags.map((tag, i) => (
+        <span
+          key={tag}
+          className="tag-chip"
+          style={{
+            backgroundColor: TAG_COLORS[i % TAG_COLORS.length],
+            color: '#fff',
+            padding: '2px 8px',
+            borderRadius: '12px',
+            fontSize: '0.72rem',
+            fontWeight: 500,
+          }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 const PRIORITY_CONFIG = {
   'high':   { icon: '!', color: '#f44336' },
   'medium': { icon: '~', color: '#ffc107' },
@@ -100,6 +126,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
             {overdue && <span className="todo-overdue-badge">Overdue</span>}
           </div>
         )}
+        <TagChips tags={todo.tags} />
       </div>
 
       <button

@@ -29,6 +29,7 @@ function AddTodo({ onAdd }) {
       onAdd({
         title: title.trim(),
         dueDate: toDueDateIso(dueDate),
+        priority,
         tags,
       });
       setTitle('');
