@@ -3,13 +3,18 @@ import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import StatsPage from './StatsPage';
+
+import BoardView from './BoardView';
 import '../App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [currentView, setCurrentView] = useState('tasks');
+
+  // PERSON6 INTEGRATION: Person 5's overdue-only UI should filter this list before rendering.
 
   useEffect(() => {
     loadTodos();
@@ -28,9 +33,9 @@ function App() {
     }
   };
 
-  const handleAdd = async (title) => {
+  const handleAdd = async ({ title, dueDate }) => {
     try {
-      const newTodo = await api.todos.create(title);
+      const newTodo = await api.todos.create({ title, dueDate });
       setTodos([...todos, newTodo]);
     } catch (err) {
       setError(err.message);
@@ -52,6 +57,28 @@ function App() {
     try {
       await api.todos.delete(id);
       setTodos(todos.filter(t => t.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleTitleSaved = (updatedTodo) => {
+    setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
+  };
+
+  const handleCompleteAll = async () => {
+    try {
+      const updated = await api.todos.completeAll();
+      setTodos(updated);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteDone = async () => {
+    try {
+      const remaining = await api.todos.deleteDone();
+      setTodos(remaining);
     } catch (err) {
       setError(err.message);
     }
@@ -97,12 +124,26 @@ function App() {
           <>
             <AddTodo onAdd={handleAdd} />
 
+
             {error && (
               <div className="error-message">
                 {error}
                 <button onClick={() => setError(null)}>x</button>
               </div>
             )}
+
+        <div className="bulk-actions">
+          <button onClick={handleCompleteAll}>Mark All Done</button>
+          <button onClick={handleDeleteDone}>Clear Completed</button>
+        </div>
+
+        {error && (
+          <div className="error-message">
+            {error}
+            <button onClick={() => setError(null)}>x</button>
+          </div>
+        )}
+
 
             {loading ? (
               <div className="loading">Loading...</div>
@@ -115,7 +156,16 @@ function App() {
             )}
           </>
         ) : (
+
           <StatsPage />
+
+
+          <>
+            
+            <BoardView todos={todos} />
+          </>
+
+
         )}
       </main>
     </div>
