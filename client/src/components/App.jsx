@@ -9,6 +9,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // PERSON6 INTEGRATION: Person 5's overdue-only UI should filter this list before rendering.
 
   useEffect(() => {
     loadTodos();
@@ -27,9 +28,9 @@ function App() {
     }
   };
 
-  const handleAdd = async (title) => {
+  const handleAdd = async ({ title, dueDate }) => {
     try {
-      const newTodo = await api.todos.create(title);
+      const newTodo = await api.todos.create({ title, dueDate });
       setTodos([...todos, newTodo]);
     } catch (err) {
       setError(err.message);
@@ -56,6 +57,10 @@ function App() {
     }
   };
 
+  const handleTitleSaved = (updatedTodo) => {
+    setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
+  };
+
   return (
     <div className="app">
       <header className="header">
@@ -75,10 +80,12 @@ function App() {
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
+
           <>
             
             <BoardView todos={todos} />
           </>
+
         )}
       </main>
     </div>

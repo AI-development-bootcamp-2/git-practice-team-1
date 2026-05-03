@@ -2,6 +2,13 @@ import { todoService } from '../services/todoService.js';
 
 export default async function todosRoutes(fastify, options) {
 
+  // PERSON6 INTEGRATION: Person 3's StatsPage date filters are wired through from/to query params here.
+  // GET /api/todos/stats - Get todo stats with optional date filtering
+  fastify.get('/stats', async (request, reply) => {
+    const { from, to } = request.query ?? {};
+    return todoService.getStats({ from, to });
+  });
+
   // GET /api/todos - Get all todos
   fastify.get('/', async (request, reply) => {
     return todoService.getAll();
@@ -18,11 +25,11 @@ export default async function todosRoutes(fastify, options) {
 
   // POST /api/todos - Create new todo
   fastify.post('/', async (request, reply) => {
-    const { title } = request.body;
+    const { title, dueDate = null } = request.body;
     if (!title || !title.trim()) {
       return reply.status(400).send({ error: 'Title is required' });
     }
-    const todo = todoService.create({ title: title.trim() });
+    const todo = todoService.create({ title: title.trim(), dueDate });
     return reply.status(201).send(todo);
   });
 
