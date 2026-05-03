@@ -36,9 +36,9 @@ export const api = {
 
     getById: (id) => fetchApi(`/todos/${id}`),
 
-    create: ({ title, dueDate = null }) => fetchApi('/todos', {
+    create: ({ title, dueDate = null, priority = 'medium' }) => fetchApi('/todos', {
       method: 'POST',
-      body: JSON.stringify({ title, dueDate }),
+      body: JSON.stringify({ title, dueDate, priority }),
     }),
 
     update: (id, updates) => fetchApi(`/todos/${id}`, {
