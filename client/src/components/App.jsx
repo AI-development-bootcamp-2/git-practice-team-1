@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+import FilterBar from './FilterBar';
 import '../App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({
+    search: '',
+    status: 'all',
+    priority: 'all'
+  });
+  const [view, setView] = useState('list');
 
   useEffect(() => {
     loadTodos();
@@ -35,10 +42,8 @@ function App() {
     }
   };
 
-  const handleToggle = async (id) => {
+  const handleStatusChange = async (id, newStatus) => {
     try {
-      const todo = todos.find(t => t.id === id);
-      const newStatus = todo.status === 'done' ? 'todo' : 'done';
       const updated = await api.todos.update(id, { status: newStatus });
       setTodos(todos.map(t => t.id === id ? updated : t));
     } catch (err) {
@@ -54,6 +59,19 @@ function App() {
       setError(err.message);
     }
   };
+
+  const filteredTodos = todos.filter(todo => {
+    const title = String(todo.title || '').toLowerCase();
+    const search = filters.search.trim().toLowerCase();
+    const status = todo.status || 'todo';
+    const priority = todo.priority || 'medium';
+
+    const matchesSearch = !search || title.includes(search);
+    const matchesStatus = filters.status === 'all' || status === filters.status;
+    const matchesPriority = filters.priority === 'all' || priority === filters.priority;
+
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
 
   return (
     <div className="app">
@@ -74,11 +92,42 @@ function App() {
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
-          <TodoList
-            todos={todos}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-          />
+          <>
+            <FilterBar filters={filters} onFiltersChange={setFilters} />
+
+            <div className="view-toggle" aria-label="Choose todo view">
+              <button
+                type="button"
+                className={view === 'list' ? 'active' : ''}
+                onClick={() => setView('list')}
+              >
+                List
+              </button>
+              <button
+                type="button"
+                className={view === 'board' ? 'active' : ''}
+                onClick={() => setView('board')}
+              >
+                Board
+              </button>
+            </div>
+
+            {filteredTodos.length === 0 ? (
+              <div className="empty-state">
+                <p>No results</p>
+              </div>
+            ) : view === 'board' ? (
+              <div className="board-placeholder">
+                Board view is not available yet.
+              </div>
+            ) : (
+              <TodoList
+                todos={filteredTodos}
+                onStatusChange={handleStatusChange}
+                onDelete={handleDelete}
+              />
+            )}
+          </>
         )}
       </main>
     </div>
