@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, onToggle, onDelete }) {
+function TodoList({ todos, onToggle, onDelete, onTitleSaved }) {
   if (todos.length === 0) {
     return (
       <div className="empty-state">
@@ -24,6 +24,8 @@ function TodoList({ todos, onToggle, onDelete }) {
               todo={todo}
               onToggle={onToggle}
               onDelete={onDelete}
+              // PERSON6 INTEGRATION: keep passing inline-edit save updates up to App when TodoList changes merge in.
+              onTitleSaved={onTitleSaved}
             />
           ))}
         </section>
@@ -38,6 +40,8 @@ function TodoList({ todos, onToggle, onDelete }) {
               todo={todo}
               onToggle={onToggle}
               onDelete={onDelete}
+              // PERSON6 INTEGRATION: keep passing inline-edit save updates up to App when TodoList changes merge in.
+              onTitleSaved={onTitleSaved}
             />
           ))}
         </section>

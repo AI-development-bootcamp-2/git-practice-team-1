@@ -1,4 +1,9 @@
 import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { api } from '../services/api';
+import { resolveInlineEdit } from '../utils/todoEditing';
+import { formatDueDate, isTodoOverdue } from '../utils/todoDates';
+
 
 const STATUS_COLORS = {
   'todo': '#9e9e9e',
@@ -28,6 +33,7 @@ function StatusBadge({ status }) {
   );
 }
 
+
 function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <div className={`todo-item ${todo.status === 'done' ? 'done' : ''}`}>
@@ -36,19 +42,52 @@ function TodoItem({ todo, onToggle, onDelete }) {
         onClick={() => onToggle(todo.id)}
         aria-label={todo.status === 'done' ? 'Mark as pending' : 'Mark as done'}
       >
-        {todo.status === 'done' ? '✓' : '○'}
+        {todo.status === 'done' ? 'Done' : 'Open'}
       </button>
 
-      <span className="todo-title">{todo.title}</span>
+      <div className="todo-content">
+        {editing ? (
+          <input
+            type="text"
+            value={draftTitle}
+            onChange={(e) => setDraftTitle(e.target.value)}
+            onBlur={() => {
+              void saveTitle();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                void saveTitle();
+              }
 
-      <StatusBadge status={todo.status} />
+              if (e.key === 'Escape') {
+                cancelEditing();
+              }
+            }}
+            className="todo-edit-input"
+            disabled={saving}
+            autoFocus
+          />
+        ) : (
+          <span className="todo-title" onDoubleClick={startEditing} title="Double-click to edit">
+            {todo.title}
+          </span>
+        )}
+
+        {/* PERSON6 INTEGRATION: Person 5 styling/filter changes in TodoItem should keep due-date and overdue rendering intact. */}
+        {dueDateLabel && (
+          <div className={`todo-due-date ${overdue ? 'overdue' : ''}`}>
+            <span>Due: {dueDateLabel}</span>
+            {overdue && <span className="todo-overdue-badge">Overdue</span>}
+          </div>
+        )}
+      </div>
 
       <button
         className="delete-btn"
         onClick={() => onDelete(todo.id)}
         aria-label="Delete todo"
       >
-        🗑️
+        Del
       </button>
     </div>
   );

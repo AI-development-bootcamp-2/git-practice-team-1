@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
+import { toDueDateIso } from '../utils/todoDates';
 
 function AddTodo({ onAdd }) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
   const [dueDate, setDueDate] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim()) {
-      onAdd(title.trim(), priority);
+      onAdd({
+        title: title.trim(),
+        dueDate: toDueDateIso(dueDate),
+      });
       setTitle('');
-      setPriority('medium');
+      setDueDate('');
     }
   };
 
@@ -23,15 +28,6 @@ function AddTodo({ onAdd }) {
         placeholder="What needs to be done?"
         className="add-input"
       />
-      <select
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-        className="priority-select"
-      >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
       <button type="submit" className="add-btn" disabled={!title.trim()}>
         Add
       </button>

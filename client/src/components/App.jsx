@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+import BoardView from './BoardView';
 import '../App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // PERSON6 INTEGRATION: Person 5's overdue-only UI should filter this list before rendering.
 
   useEffect(() => {
     loadTodos();
@@ -26,9 +28,9 @@ function App() {
     }
   };
 
-  const handleAdd = async (title) => {
+  const handleAdd = async ({ title, dueDate }) => {
     try {
-      const newTodo = await api.todos.create(title);
+      const newTodo = await api.todos.create({ title, dueDate });
       setTodos([...todos, newTodo]);
     } catch (err) {
       setError(err.message);
@@ -55,6 +57,28 @@ function App() {
     }
   };
 
+  const handleTitleSaved = (updatedTodo) => {
+    setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
+  };
+
+  const handleCompleteAll = async () => {
+    try {
+      const updated = await api.todos.completeAll();
+      setTodos(updated);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteDone = async () => {
+    try {
+      const remaining = await api.todos.deleteDone();
+      setTodos(remaining);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="app">
       <header className="header">
@@ -63,6 +87,11 @@ function App() {
 
       <main className="main">
         <AddTodo onAdd={handleAdd} />
+
+        <div className="bulk-actions">
+          <button onClick={handleCompleteAll}>Mark All Done</button>
+          <button onClick={handleDeleteDone}>Clear Completed</button>
+        </div>
 
         {error && (
           <div className="error-message">
@@ -74,11 +103,12 @@ function App() {
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
-          <TodoList
-            todos={todos}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-          />
+
+          <>
+            
+            <BoardView todos={todos} />
+          </>
+
         )}
       </main>
     </div>
