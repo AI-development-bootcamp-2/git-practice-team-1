@@ -5,7 +5,23 @@ function AddTodo({ onAdd }) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
   const [dueDate, setDueDate] = useState('');
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState([]);
 
+  const handleTagKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const tag = tagInput.trim();
+      if (tag) {
+        setTags([...tags, tag]);
+        setTagInput('');
+      }
+    }
+  };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,9 +29,12 @@ function AddTodo({ onAdd }) {
       onAdd({
         title: title.trim(),
         dueDate: toDueDateIso(dueDate),
+        tags,
       });
       setTitle('');
       setDueDate('');
+      setTags([]);
+      setTagInput('');
     }
   };
 
@@ -28,6 +47,30 @@ function AddTodo({ onAdd }) {
         placeholder="What needs to be done?"
         className="add-input"
       />
+      <input
+        type="text"
+        value={tagInput}
+        onChange={(e) => setTagInput(e.target.value)}
+        onKeyDown={handleTagKeyDown}
+        placeholder="Add a tag and press Enter"
+        className="add-input"
+      />
+      {tags.length > 0 && (
+        <div className="tag-chips">
+          {tags.map((tag, i) => (
+            <span key={i} className="tag-chip">
+              {tag}
+              <button
+                type="button"
+                className="tag-chip-remove"
+                onClick={() => removeTag(i)}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
       <button type="submit" className="add-btn" disabled={!title.trim()}>
         Add
       </button>
