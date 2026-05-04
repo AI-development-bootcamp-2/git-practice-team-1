@@ -34,7 +34,7 @@ function App() {
     }
   };
 
-  const handleAdd = async ({ titleh, dueDate, priority, tags }) => {
+  const handleAdd = async ({ title, dueDate, priority, tags }) => {
     try {
       const newTodo = await api.todos.create({ title, dueDate, priority, tags });
       setTodos([...todos, newTodo]);
@@ -46,6 +46,15 @@ function App() {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const updated = await api.todos.update(id, { status: newStatus });
+      setTodos(todos.map(t => t.id === id ? updated : t));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handlePriorityChange = async (id, newPriority) => {
+    try {
+      const updated = await api.todos.update(id, { priority: newPriority });
       setTodos(todos.map(t => t.id === id ? updated : t));
     } catch (err) {
       setError(err.message);
@@ -181,6 +190,7 @@ function App() {
                   // PERSON6 INTEGRATION: BoardView gets filtered todos; merge drag-and-drop status updates back into full app state.
                   <BoardView
                     todos={filteredTodos}
+                    onPriorityChange={handlePriorityChange}
                     onTodosChange={(updatedFilteredTodos) =>
                       setTodos((currentTodos) => {
                         const updatesById = new Map(
@@ -198,6 +208,7 @@ function App() {
                   <TodoList
                     todos={filteredTodos}
                     onStatusChange={handleStatusChange}
+                    onPriorityChange={handlePriorityChange}
                     onDelete={handleDelete}
                     onTitleSaved={handleTitleSaved}
                   />

@@ -16,7 +16,7 @@ function buildQuery(params = {}) {
 async function fetchApi(endpoint, options = {}) {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     headers: {
-      'Content-Type': 'application/json',
+      ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
     },
     ...options,

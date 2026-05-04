@@ -141,7 +141,7 @@ await runTest('api.todos.create sends title and dueDate in the request body', as
     title: 'Write tests',
     dueDate: '2026-05-10T00:00:00.000Z',
     priority: 'medium',
-    tags: []
+    tags: [],
   });
 });
 
@@ -163,7 +163,7 @@ await runTest('api.todos.create sends null dueDate when it is omitted', async ()
     title: 'No due date yet',
     dueDate: null,
     priority: 'medium',
-    tags: []
+    tags: [],
   });
 });
 
