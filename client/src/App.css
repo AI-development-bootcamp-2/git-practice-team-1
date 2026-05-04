@@ -96,6 +96,17 @@ body {
   cursor: not-allowed;
 }
 
+.input-error {
+  border-color: #e53935 !important;
+}
+
+.validation-error {
+  width: 100%;
+  color: #e53935;
+  font-size: 13px;
+  margin-top: -8px;
+}
+
 /* === FILTERS & VIEW TOGGLE === */
 .filter-bar {
   display: grid;

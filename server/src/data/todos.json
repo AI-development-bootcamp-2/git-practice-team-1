@@ -2,12 +2,12 @@
   {
     "id": "2",
     "title": "Practice merge conflicts",
-    "status": "todo",
+    "status": "done",
     "priority": "medium",
     "dueDate": null,
     "tags": [],
     "createdAt": "2024-01-15T10:00:00.000Z",
-    "updatedAt": "2026-05-03T11:48:25.513Z"
+    "updatedAt": "2026-05-04T07:55:22.838Z"
   },
   {
     "id": "3",
@@ -17,7 +17,7 @@
     "dueDate": null,
     "tags": [],
     "createdAt": "2024-01-15T11:00:00.000Z",
-    "updatedAt": "2024-01-15T11:00:00.000Z"
+    "updatedAt": "2026-05-03T12:43:51.304Z"
   },
   {
     "id": "a287586f-5f29-4b35-b4fb-857990d6403d",
