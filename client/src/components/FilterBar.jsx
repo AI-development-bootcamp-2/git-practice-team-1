@@ -65,6 +65,7 @@ function FilterBar({ filters, onFiltersChange }) {
           type="checkbox"
           checked={filters.overdueOnly}
           onChange={(e) => updateFilter('overdueOnly', e.target.checked)}
+          aria-label="Show overdue only"
         />
         Show overdue only
       </label>
