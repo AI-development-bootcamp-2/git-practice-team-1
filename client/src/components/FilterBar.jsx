@@ -60,15 +60,14 @@ function FilterBar({ filters, onFiltersChange }) {
         ))}
       </select>
 
-      {/* PERSON6: overdue-only filter coordinated with Person 5's FilterBar */}
-      <label className="filter-overdue-label">
+      <label className="filter-checkbox">
         <input
           type="checkbox"
           checked={filters.overdueOnly}
           onChange={(e) => updateFilter('overdueOnly', e.target.checked)}
           aria-label="Show overdue only"
         />
-        {' '}Overdue only
+        Show overdue only
       </label>
     </div>
   );

@@ -14,7 +14,6 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [filters, setFilters] = useState({ search: '', status: 'all', priority: 'all', overdueOnly: false });
   const [view, setView] = useState('list');
   const [currentView, setCurrentView] = useState('tasks');
@@ -84,8 +83,8 @@ function App() {
     const matchesSearch = !search || title.includes(search);
     const matchesStatus = filters.status === 'all' || status === filters.status;
     const matchesPriority = filters.priority === 'all' || priority === filters.priority;
-    // PERSON6: overdue-only filter using isTodoOverdue from todoDates
     const matchesOverdue = !filters.overdueOnly || isTodoOverdue(todo);
+
     return matchesSearch && matchesStatus && matchesPriority && matchesOverdue;
   });
 

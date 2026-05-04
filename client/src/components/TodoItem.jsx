@@ -73,9 +73,9 @@ function TodoItem({ todo, onStatusChange, onPriorityChange, onDelete, onTitleSav
   };
 
   const saveTitle = async () => {
-    const result = resolveInlineEdit(draftTitle, todo.title);
-    if (!result.changed) {
-      setEditing(false);
+    const result = resolveInlineEdit(todo.title, draftTitle);
+    if (result.action !== 'save') {
+      cancelEditing();
       return;
     }
     setSaving(true);
