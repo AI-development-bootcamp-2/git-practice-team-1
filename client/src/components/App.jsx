@@ -34,7 +34,7 @@ function App() {
     }
   };
 
-  const handleAdd = async ({ title, dueDate, priority, tags }) => {
+  const handleAdd = async ({ titleh, dueDate, priority, tags }) => {
     try {
       const newTodo = await api.todos.create({ title, dueDate, priority, tags });
       setTodos([...todos, newTodo]);

@@ -1,21 +1,14 @@
 [
   {
-    "id": "1",
-    "title": "Learn Git basics",
-    "status": "done",
-    "priority": "low",
-    "dueDate": "2026-05-01T00:00:00.000Z",
-    "tags": ["git", "learning"],
-    "createdAt": "2026-05-01T09:00:00.000Z",
-    "updatedAt": "2026-05-01T10:43:33.408Z"
-  },
-  {
     "id": "2",
     "title": "Practice merge conflicts",
     "status": "in-progress",
     "priority": "high",
     "dueDate": "2026-05-05T00:00:00.000Z",
-    "tags": ["git", "teamwork"],
+    "tags": [
+      "git",
+      "teamwork"
+    ],
     "createdAt": "2026-05-02T10:00:00.000Z",
     "updatedAt": "2026-05-03T11:48:25.513Z"
   },
@@ -25,7 +18,10 @@
     "status": "todo",
     "priority": "medium",
     "dueDate": "2026-05-10T00:00:00.000Z",
-    "tags": ["frontend", "backend"],
+    "tags": [
+      "frontend",
+      "backend"
+    ],
     "createdAt": "2026-05-03T11:00:00.000Z",
     "updatedAt": "2026-05-03T11:00:00.000Z"
   },
@@ -35,7 +31,10 @@
     "status": "review",
     "priority": "high",
     "dueDate": "2026-05-04T00:00:00.000Z",
-    "tags": ["review", "pr"],
+    "tags": [
+      "review",
+      "pr"
+    ],
     "createdAt": "2026-05-03T14:00:00.000Z",
     "updatedAt": "2026-05-03T15:00:00.000Z"
   },
@@ -45,7 +44,9 @@
     "status": "todo",
     "priority": "low",
     "dueDate": null,
-    "tags": ["docs"],
+    "tags": [
+      "docs"
+    ],
     "createdAt": "2026-05-02T08:00:00.000Z",
     "updatedAt": "2026-05-02T08:00:00.000Z"
   },
@@ -55,19 +56,12 @@
     "status": "in-progress",
     "priority": "medium",
     "dueDate": "2026-05-04T12:00:00.000Z",
-    "tags": ["bug", "frontend"],
+    "tags": [
+      "bug",
+      "frontend"
+    ],
     "createdAt": "2026-05-03T09:00:00.000Z",
     "updatedAt": "2026-05-03T10:30:00.000Z"
-  },
-  {
-    "id": "7",
-    "title": "Deploy to staging",
-    "status": "done",
-    "priority": "high",
-    "dueDate": "2026-05-02T18:00:00.000Z",
-    "tags": ["devops", "deployment"],
-    "createdAt": "2026-05-01T14:00:00.000Z",
-    "updatedAt": "2026-05-02T19:00:00.000Z"
   },
   {
     "id": "a287586f-5f29-4b35-b4fb-857990d6403d",
