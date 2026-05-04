@@ -6,9 +6,11 @@ import FilterBar from './FilterBar';
 import { isTodoOverdue } from '../utils/todoDates';
 import StatsPage from './StatsPage';
 import BoardView from './BoardView';
+import LoginPage from './LoginPage';
 import '../App.css';
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState(() => localStorage.getItem('auth_user'));
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -104,10 +106,39 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
+    setLoggedInUser(null);
+  };
+
+  if (!loggedInUser) {
+    return <LoginPage onLogin={setLoggedInUser} />;
+  }
+
   return (
     <div className="app">
       <header className="header">
-        <h1>Todo App</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1>Todo App</h1>
+          <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.9)' }}>
+            <span style={{ marginRight: '12px' }}>{loggedInUser}</span>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '6px 12px',
+                backgroundColor: 'rgba(255,255,255,0.15)',
+                color: 'white',
+                border: '1px solid rgba(255,255,255,0.4)',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
         <nav style={{ marginTop: '10px' }}>
           <button
             onClick={() => setCurrentView('tasks')}
