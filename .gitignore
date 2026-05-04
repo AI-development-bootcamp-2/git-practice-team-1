@@ -5,3 +5,4 @@ dist/
 *.log
 .vite/
 PERSON6_LOCAL_PLAN.md
+todos.json
