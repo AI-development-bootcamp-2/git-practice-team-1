@@ -4,5 +4,5 @@ dist/
 .DS_Store
 *.log
 .vite/
+person-4-tasks.md
 PERSON6_LOCAL_PLAN.md
-todos.json

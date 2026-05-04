@@ -14,11 +14,6 @@ export default async function todosRoutes(fastify, options) {
     return todoService.getAll();
   });
 
-
-  // GET /api/todos/stats - Get todo statistics
-  fastify.get('/stats', async (request, reply) => {
-    return todoService.getStats();
-
   // PATCH /api/todos/complete-all - Mark all todos as done
   fastify.patch('/complete-all', async (request, reply) => {
     return todoService.completeAll();
@@ -27,7 +22,6 @@ export default async function todosRoutes(fastify, options) {
   // DELETE /api/todos/done - Delete all completed todos
   fastify.delete('/done', async (request, reply) => {
     return todoService.deleteDone();
-
   });
 
   // GET /api/todos/:id - Get single todo
@@ -41,11 +35,11 @@ export default async function todosRoutes(fastify, options) {
 
   // POST /api/todos - Create new todo
   fastify.post('/', async (request, reply) => {
-    const { title, dueDate = null } = request.body;
+    const { title, dueDate = null, priority = 'medium', tags = [] } = request.body;
     if (!title || !title.trim()) {
       return reply.status(400).send({ error: 'Title is required' });
     }
-    const todo = todoService.create({ title: title.trim(), dueDate });
+    const todo = todoService.create({ title: title.trim(), dueDate, priority, tags });
     return reply.status(201).send(todo);
   });
 
@@ -67,3 +61,4 @@ export default async function todosRoutes(fastify, options) {
     return { success: true };
   });
 }
+
