@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 
-const PRIORITY_LABELS = { high: 'High', medium: 'Medium', low: 'Low' };
+const PRIORITY_OPTIONS = [
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+];
 
 const STATUS_COLORS = {
   'todo': '#9e9e9e',
@@ -36,7 +40,7 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-function TaskCard({ todo, overlay = false }) {
+function TaskCard({ todo, overlay = false, onPriorityChange }) {
   const { title, status, priority, dueDate, tags = [] } = todo;
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: todo.id });
 
@@ -50,11 +54,21 @@ function TaskCard({ todo, overlay = false }) {
 
       <div className="task-card-meta">
         {status && <StatusBadge status={status} />}
-        {priority && (
-          <span className={`priority-badge priority-${priority}`}>
-            {PRIORITY_LABELS[priority] ?? priority}
-          </span>
-        )}
+        {!overlay && onPriorityChange ? (
+          <select
+            className={`priority-select priority-${priority || 'medium'}`}
+            value={priority || 'medium'}
+            onChange={(e) => onPriorityChange(todo.id, e.target.value)}
+            onPointerDown={(e) => e.stopPropagation()}
+            aria-label={`Change priority for ${title}`}
+          >
+            {PRIORITY_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        ) : priority ? (
+          <span className={`priority-badge priority-${priority}`}>{priority}</span>
+        ) : null}
         {dueDate && (
           <span className="due-date">{formatDate(dueDate)}</span>
         )}

@@ -11,7 +11,7 @@ const COLUMNS = [
   { status: 'review',      title: 'Review',      colorClass: 'col-review' },
 ];
 
-function BoardView({ todos, onTodosChange }) {
+function BoardView({ todos, onTodosChange, onPriorityChange }) {
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -47,6 +47,7 @@ function BoardView({ todos, onTodosChange }) {
             todos={todos.filter((t) => t.status === status)}
             colorClass={colorClass}
             activeId={activeId}
+            onPriorityChange={onPriorityChange}
           />
         ))}
       </div>

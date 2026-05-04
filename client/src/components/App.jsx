@@ -189,6 +189,7 @@ function App() {
                   // PERSON6 INTEGRATION: BoardView gets filtered todos; merge drag-and-drop status updates back into full app state.
                   <BoardView
                     todos={filteredTodos}
+                    onPriorityChange={handlePriorityChange}
                     onTodosChange={(updatedFilteredTodos) =>
                       setTodos((currentTodos) => {
                         const updatesById = new Map(
