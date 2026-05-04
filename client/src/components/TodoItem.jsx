@@ -11,15 +11,6 @@ const STATUS_OPTIONS = [
   { value: 'done', label: 'Done' }
 ];
 
-function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
-  const [editing, setEditing] = useState(false);
-  const [draftTitle, setDraftTitle] = useState(todo.title);
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    setDraftTitle(todo.title);
-  }, [todo.title]);
-
 const STATUS_COLORS = {
   'todo': '#9e9e9e',
   'in-progress': '#2196f3',
@@ -93,6 +84,32 @@ function StatusBadge({ status }) {
   );
 }
 
+function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
+  const [editing, setEditing] = useState(false);
+  const [draftTitle, setDraftTitle] = useState(todo.title);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setDraftTitle(todo.title);
+  }, [todo.title]);
+
+  const dueDateLabel = formatDueDate(todo.dueDate);
+  const overdue = isTodoOverdue(todo);
+
+  const startEditing = () => setEditing(true);
+
+  const cancelEditing = () => {
+    setDraftTitle(todo.title);
+    setEditing(false);
+  };
+
+  const saveTitle = async () => {
+    const result = resolveInlineEdit(draftTitle, todo.title);
+    if (!result.changed) {
+      setEditing(false);
+      return;
+    }
+    setSaving(true);
     try {
       const updatedTodo = await api.todos.update(todo.id, { title: result.title });
       onTitleSaved(updatedTodo);
@@ -102,7 +119,6 @@ function StatusBadge({ status }) {
     }
   };
 
-function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <div className={`todo-item ${todo.status === 'done' ? 'done' : ''}`}>
       <select
@@ -124,17 +140,10 @@ function TodoItem({ todo, onToggle, onDelete }) {
             type="text"
             value={draftTitle}
             onChange={(e) => setDraftTitle(e.target.value)}
-            onBlur={() => {
-              void saveTitle();
-            }}
+            onBlur={() => { void saveTitle(); }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                void saveTitle();
-              }
-
-              if (e.key === 'Escape') {
-                cancelEditing();
-              }
+              if (e.key === 'Enter') void saveTitle();
+              if (e.key === 'Escape') cancelEditing();
             }}
             className="todo-edit-input"
             disabled={saving}
@@ -155,6 +164,8 @@ function TodoItem({ todo, onToggle, onDelete }) {
         )}
         <TagChips tags={todo.tags} />
       </div>
+
+      <StatusBadge status={todo.status} />
 
       <button
         className="delete-btn"
