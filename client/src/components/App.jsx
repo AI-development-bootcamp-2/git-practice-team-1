@@ -51,6 +51,15 @@ function App() {
     }
   };
 
+  const handlePriorityChange = async (id, newPriority) => {
+    try {
+      const updated = await api.todos.update(id, { priority: newPriority });
+      setTodos(todos.map(t => t.id === id ? updated : t));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleTitleSaved = (updatedTodo) => {
     setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   };
@@ -197,6 +206,7 @@ function App() {
                   <TodoList
                     todos={filteredTodos}
                     onStatusChange={handleStatusChange}
+                    onPriorityChange={handlePriorityChange}
                     onDelete={handleDelete}
                     onTitleSaved={handleTitleSaved}
                   />

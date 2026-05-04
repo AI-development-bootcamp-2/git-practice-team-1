@@ -44,6 +44,12 @@ function TagChips({ tags }) {
   );
 }
 
+const PRIORITY_OPTIONS = [
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+];
+
 const PRIORITY_CONFIG = {
   'high':   { icon: '!', color: '#f44336' },
   'medium': { icon: '~', color: '#ffc107' },
@@ -84,7 +90,7 @@ function StatusBadge({ status }) {
   );
 }
 
-function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
+function TodoItem({ todo, onStatusChange, onPriorityChange, onDelete, onTitleSaved }) {
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(todo.title);
   const [saving, setSaving] = useState(false);
@@ -128,6 +134,18 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
         aria-label={`Change status for ${todo.title}`}
       >
         {STATUS_OPTIONS.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <select
+        className="priority-select"
+        value={todo.priority || 'medium'}
+        onChange={(e) => onPriorityChange(todo.id, e.target.value)}
+        aria-label={`Change priority for ${todo.title}`}
+      >
+        {PRIORITY_OPTIONS.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
