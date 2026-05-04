@@ -14,8 +14,8 @@ const StatsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch stats from our mocked endpoint
-    fetch('/api/todos/stats')
+    // Fetch stats from our mocked endpoint or main server
+    fetch('http://localhost:3001/api/todos/stats')
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch stats');
         return res.json();

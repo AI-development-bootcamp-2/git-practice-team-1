@@ -3,20 +3,20 @@
     "id": "1",
     "title": "Learn Git basics",
     "status": "done",
-    "priority": "medium",
-    "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T09:00:00.000Z",
-    "updatedAt": "2026-01-09T21:43:33.408Z"
+    "priority": "low",
+    "dueDate": "2026-05-01T00:00:00.000Z",
+    "tags": ["git", "learning"],
+    "createdAt": "2026-05-01T09:00:00.000Z",
+    "updatedAt": "2026-05-01T10:43:33.408Z"
   },
   {
     "id": "2",
     "title": "Practice merge conflicts",
-    "status": "todo",
-    "priority": "medium",
-    "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T10:00:00.000Z",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2026-05-05T00:00:00.000Z",
+    "tags": ["git", "teamwork"],
+    "createdAt": "2026-05-02T10:00:00.000Z",
     "updatedAt": "2026-05-03T11:48:25.513Z"
   },
   {
@@ -24,9 +24,49 @@
     "title": "Build awesome features",
     "status": "todo",
     "priority": "medium",
+    "dueDate": "2026-05-10T00:00:00.000Z",
+    "tags": ["frontend", "backend"],
+    "createdAt": "2026-05-03T11:00:00.000Z",
+    "updatedAt": "2026-05-03T11:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Review Person 3's PR",
+    "status": "review",
+    "priority": "high",
+    "dueDate": "2026-05-04T00:00:00.000Z",
+    "tags": ["review", "pr"],
+    "createdAt": "2026-05-03T14:00:00.000Z",
+    "updatedAt": "2026-05-03T15:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Update README documentation",
+    "status": "todo",
+    "priority": "low",
     "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T11:00:00.000Z",
-    "updatedAt": "2024-01-15T11:00:00.000Z"
+    "tags": ["docs"],
+    "createdAt": "2026-05-02T08:00:00.000Z",
+    "updatedAt": "2026-05-02T08:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "title": "Fix bug in StatsPage pie chart",
+    "status": "in-progress",
+    "priority": "medium",
+    "dueDate": "2026-05-04T12:00:00.000Z",
+    "tags": ["bug", "frontend"],
+    "createdAt": "2026-05-03T09:00:00.000Z",
+    "updatedAt": "2026-05-03T10:30:00.000Z"
+  },
+  {
+    "id": "7",
+    "title": "Deploy to staging",
+    "status": "done",
+    "priority": "high",
+    "dueDate": "2026-05-02T18:00:00.000Z",
+    "tags": ["devops", "deployment"],
+    "createdAt": "2026-05-01T14:00:00.000Z",
+    "updatedAt": "2026-05-02T19:00:00.000Z"
   }
 ]
