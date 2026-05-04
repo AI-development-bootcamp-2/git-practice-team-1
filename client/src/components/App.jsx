@@ -99,6 +99,7 @@ function App() {
   };
 
   const handleDeleteDone = async () => {
+    if (!window.confirm('Are you sure you want to delete all completed tasks? This cannot be undone.')) return;
     try {
       const remaining = await api.todos.deleteDone();
       setTodos(remaining);
