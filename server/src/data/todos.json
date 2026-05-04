@@ -1,15 +1,5 @@
 [
   {
-    "id": "1",
-    "title": "Learn Git basics",
-    "status": "done",
-    "priority": "medium",
-    "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T09:00:00.000Z",
-    "updatedAt": "2026-01-09T21:43:33.408Z"
-  },
-  {
     "id": "2",
     "title": "Practice merge conflicts",
     "status": "todo",
@@ -38,5 +28,15 @@
     "tags": [],
     "createdAt": "2026-05-03T11:55:57.246Z",
     "updatedAt": "2026-05-03T11:55:57.246Z"
+  },
+  {
+    "id": "c7152998-9b60-4472-8a85-e1b5bbc7448f",
+    "title": "asd",
+    "status": "todo",
+    "priority": "medium",
+    "tags": [],
+    "dueDate": null,
+    "createdAt": "2026-05-03T12:57:49.263Z",
+    "updatedAt": "2026-05-03T12:57:49.263Z"
   }
 ]

@@ -41,11 +41,11 @@ export default async function todosRoutes(fastify, options) {
 
   // POST /api/todos - Create new todo
   fastify.post('/', async (request, reply) => {
-    const { title, dueDate = null } = request.body;
+    const { title, dueDate = null, priority = 'medium', tags = [] } = request.body;
     if (!title || !title.trim()) {
       return reply.status(400).send({ error: 'Title is required' });
     }
-    const todo = todoService.create({ title: title.trim(), dueDate });
+    const todo = todoService.create({ title: title.trim(), dueDate, priority, tags });
     return reply.status(201).send(todo);
   });
 

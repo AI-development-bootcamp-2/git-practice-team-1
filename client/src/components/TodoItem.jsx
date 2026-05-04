@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { resolveInlineEdit } from '../utils/todoEditing';
@@ -19,34 +20,78 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
     setDraftTitle(todo.title);
   }, [todo.title]);
 
-  const dueDateLabel = formatDueDate(todo.dueDate);
-  const overdue = isTodoOverdue(todo);
+const STATUS_COLORS = {
+  'todo': '#9e9e9e',
+  'in-progress': '#2196f3',
+  'review': '#ff9800',
+  'done': '#4caf50',
+};
 
-  const startEditing = () => {
-    setDraftTitle(todo.title);
-    setEditing(true);
-  };
+const TAG_COLORS = ['#6c63ff', '#e91e8c', '#00bcd4', '#43a047', '#fb8c00', '#e53935'];
 
-  const cancelEditing = () => {
-    setDraftTitle(todo.title);
-    setEditing(false);
-  };
+function TagChips({ tags }) {
+  if (!tags || tags.length === 0) return null;
+  return (
+    <div className="tag-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+      {tags.map((tag, i) => (
+        <span
+          key={tag}
+          className="tag-chip"
+          style={{
+            backgroundColor: TAG_COLORS[i % TAG_COLORS.length],
+            color: '#fff',
+            padding: '2px 8px',
+            borderRadius: '12px',
+            fontSize: '0.72rem',
+            fontWeight: 500,
+          }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
 
-  const saveTitle = async () => {
-    const result = resolveInlineEdit(todo.title, draftTitle);
+const PRIORITY_CONFIG = {
+  'high':   { icon: '!', color: '#f44336' },
+  'medium': { icon: '~', color: '#ffc107' },
+  'low':    { icon: '↓', color: '#9e9e9e' },
+};
 
-    if (result.action === 'cancel') {
-      setDraftTitle(result.title);
-      setEditing(false);
-      return;
-    }
+function PriorityIndicator({ priority }) {
+  const config = PRIORITY_CONFIG[priority];
+  if (!config) return null;
+  return (
+    <span
+      style={{ color: config.color, fontWeight: 700, marginRight: '6px', fontSize: '0.9rem' }}
+      aria-label={`Priority: ${priority}`}
+    >
+      {config.icon}
+    </span>
+  );
+}
 
-    if (result.action === 'noop') {
-      setEditing(false);
-      return;
-    }
-
-    setSaving(true);
+function StatusBadge({ status }) {
+  const color = STATUS_COLORS[status] || '#9e9e9e';
+  return (
+    <span
+      className="status-badge"
+      style={{
+        backgroundColor: color,
+        color: '#fff',
+        padding: '2px 8px',
+        borderRadius: '12px',
+        fontSize: '0.75rem',
+        fontWeight: 500,
+        textTransform: 'capitalize',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {status}
+    </span>
+  );
+}
 
     try {
       const updatedTodo = await api.todos.update(todo.id, { title: result.title });
@@ -57,6 +102,7 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
     }
   };
 
+function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <div className={`todo-item ${todo.status === 'done' ? 'done' : ''}`}>
       <select
@@ -96,6 +142,7 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
           />
         ) : (
           <span className="todo-title" onDoubleClick={startEditing} title="Double-click to edit">
+            <PriorityIndicator priority={todo.priority} />
             {todo.title}
           </span>
         )}
@@ -106,6 +153,7 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
             {overdue && <span className="todo-overdue-badge">Overdue</span>}
           </div>
         )}
+        <TagChips tags={todo.tags} />
       </div>
 
       <button
