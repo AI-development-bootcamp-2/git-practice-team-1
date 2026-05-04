@@ -16,7 +16,7 @@ function buildQuery(params = {}) {
 async function fetchApi(endpoint, options = {}) {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     headers: {
-      'Content-Type': 'application/json',
+      ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
     },
     ...options,
@@ -31,6 +31,13 @@ async function fetchApi(endpoint, options = {}) {
 }
 
 export const api = {
+  auth: {
+    login: ({ username, password }) => fetchApi('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    }),
+  },
+
   todos: {
     getAll: () => fetchApi('/todos'),
 

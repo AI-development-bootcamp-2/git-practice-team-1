@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { resolveInlineEdit } from '../utils/todoEditing';
@@ -31,6 +30,7 @@ const PRIORITY_COLORS = {
   'medium': { bg: '#fef3c7', color: '#b45309' },
   'low':    { bg: '#d1fae5', color: '#065f46' },
 };
+
 
 function StatusBadge({ status }) {
   const color = STATUS_COLORS[status] || '#9e9e9e';

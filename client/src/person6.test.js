@@ -93,7 +93,6 @@ await runTest('overdueOnly filter: isTodoOverdue returns false for a non-overdue
   assert.equal(isTodoOverdue(futureTodo, now), false);
   assert.equal(isTodoOverdue(overdueTodo, now), true);
 });
-
 await runTest('resolveInlineEdit cancels blank edits after trimming', async () => {
   assert.deepEqual(resolveInlineEdit('Keep title', '   '), {
     action: 'cancel',
@@ -114,7 +113,6 @@ await runTest('resolveInlineEdit returns noop when whitespace-padded draft trims
     title: 'Keep title',
   });
 });
-
 await runTest('resolveInlineEdit saves a meaningful trimmed title change', async () => {
   assert.deepEqual(resolveInlineEdit('Old title', '  New title  '), {
     action: 'save',
@@ -142,6 +140,8 @@ await runTest('api.todos.create sends title and dueDate in the request body', as
   assert.deepEqual(JSON.parse(calls[0].options.body), {
     title: 'Write tests',
     dueDate: '2026-05-10T00:00:00.000Z',
+    priority: 'medium',
+    tags: [],
   });
 });
 
@@ -162,6 +162,8 @@ await runTest('api.todos.create sends null dueDate when it is omitted', async ()
   assert.deepEqual(JSON.parse(calls[0].options.body), {
     title: 'No due date yet',
     dueDate: null,
+    priority: 'medium',
+    tags: [],
   });
 });
 
@@ -213,7 +215,6 @@ await runTest('api.todos.update sends the correct id and body for inline title s
   assert.equal(calls[0].options.method, 'PUT');
   assert.deepEqual(JSON.parse(calls[0].options.body), { title: 'Updated title' });
 });
-
 await runTest('api propagates server error messages', async () => {
   global.fetch = async () => ({
     ok: false,
