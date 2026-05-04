@@ -31,6 +31,13 @@ async function fetchApi(endpoint, options = {}) {
 }
 
 export const api = {
+  auth: {
+    login: ({ username, password }) => fetchApi('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    }),
+  },
+
   todos: {
     getAll: () => fetchApi('/todos'),
 

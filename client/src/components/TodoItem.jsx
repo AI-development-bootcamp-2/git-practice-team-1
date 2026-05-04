@@ -31,6 +31,7 @@ const PRIORITY_COLORS = {
   'low':    { bg: '#d1fae5', color: '#065f46' },
 };
 
+
 function StatusBadge({ status }) {
   const color = STATUS_COLORS[status] || '#9e9e9e';
   return (
