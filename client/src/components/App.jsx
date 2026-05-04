@@ -177,8 +177,21 @@ function App() {
                     <p>No results</p>
                   </div>
                 ) : view === 'board' ? (
-                  // PERSON6 INTEGRATION: BoardView gets todos; drag-and-drop status update is Person 2's scope.
-                  <BoardView todos={filteredTodos} onTodosChange={setTodos} />
+                  // PERSON6 INTEGRATION: BoardView gets filtered todos; merge drag-and-drop status updates back into full app state.
+                  <BoardView
+                    todos={filteredTodos}
+                    onTodosChange={(updatedFilteredTodos) =>
+                      setTodos((currentTodos) => {
+                        const updatesById = new Map(
+                          updatedFilteredTodos.map((todo) => [todo.id, todo])
+                        );
+
+                        return currentTodos.map(
+                          (todo) => updatesById.get(todo.id) ?? todo
+                        );
+                      })
+                    }
+                  />
                 ) : (
                   // PERSON6 INTEGRATION: onTitleSaved must stay here so inline title edits update app state.
                   <TodoList
