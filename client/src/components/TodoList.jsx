@@ -8,7 +8,7 @@ const STATUS_SECTIONS = [
   { value: 'done', label: 'Done' }
 ];
 
-function TodoList({ todos, onStatusChange, onDelete, onTitleSaved }) {
+function TodoList({ todos, onStatusChange, onPriorityChange, onDelete, onTitleSaved }) {
   if (todos.length === 0) {
     return (
       <div className="empty-state">
@@ -32,6 +32,7 @@ function TodoList({ todos, onStatusChange, onDelete, onTitleSaved }) {
                 key={todo.id}
                 todo={todo}
                 onStatusChange={onStatusChange}
+                onPriorityChange={onPriorityChange}
                 onDelete={onDelete}
                 onTitleSaved={onTitleSaved}
               />

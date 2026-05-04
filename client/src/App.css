@@ -123,6 +123,30 @@ body {
   border-color: #4361ee;
 }
 
+/* === BULK ACTIONS === */
+.bulk-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bulk-actions button {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  background: white;
+  color: #4361ee;
+  border: 2px solid #4361ee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.bulk-actions button:hover {
+  background: #4361ee;
+  color: white;
+}
+
 .view-toggle {
   display: flex;
   gap: 8px;
@@ -390,6 +414,19 @@ body {
   padding: 2px 8px;
   border-radius: 12px;
   text-transform: capitalize;
+}
+
+.priority-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+  outline: none;
 }
 
 .priority-high   { background: #fee2e2; color: #dc2626; }

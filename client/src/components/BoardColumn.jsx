@@ -2,7 +2,7 @@ import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import TaskCard from './TaskCard';
 
-function BoardColumn({ id, title, todos, colorClass }) {
+function BoardColumn({ id, title, todos, colorClass, onPriorityChange }) {
   const { setNodeRef, isOver } = useDroppable({ id });
 
   return (
@@ -19,7 +19,7 @@ function BoardColumn({ id, title, todos, colorClass }) {
         {todos.length === 0 ? (
           <p className="board-column-empty">No tasks</p>
         ) : (
-          todos.map((todo) => <TaskCard key={todo.id} todo={todo} />)
+          todos.map((todo) => <TaskCard key={todo.id} todo={todo} onPriorityChange={onPriorityChange} />)
         )}
       </div>
     </div>
