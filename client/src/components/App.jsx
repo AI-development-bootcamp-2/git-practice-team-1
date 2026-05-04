@@ -14,6 +14,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [filters, setFilters] = useState({ search: '', status: 'all', priority: 'all', overdueOnly: false });
   const [view, setView] = useState('list');
   const [currentView, setCurrentView] = useState('tasks');

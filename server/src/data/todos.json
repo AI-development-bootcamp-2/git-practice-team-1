@@ -2,22 +2,66 @@
   {
     "id": "2",
     "title": "Practice merge conflicts",
-    "status": "done",
-    "priority": "medium",
-    "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T10:00:00.000Z",
-    "updatedAt": "2026-05-04T07:55:22.838Z"
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2026-05-05T00:00:00.000Z",
+    "tags": [
+      "git",
+      "teamwork"
+    ],
+    "createdAt": "2026-05-02T10:00:00.000Z",
+    "updatedAt": "2026-05-03T11:48:25.513Z"
   },
   {
     "id": "3",
     "title": "Build awesome features",
     "status": "todo",
     "priority": "medium",
+    "dueDate": "2026-05-10T00:00:00.000Z",
+    "tags": [
+      "frontend",
+      "backend"
+    ],
+    "createdAt": "2026-05-03T11:00:00.000Z",
+    "updatedAt": "2026-05-03T11:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Review Person 3's PR",
+    "status": "review",
+    "priority": "high",
+    "dueDate": "2026-05-04T00:00:00.000Z",
+    "tags": [
+      "review",
+      "pr"
+    ],
+    "createdAt": "2026-05-03T14:00:00.000Z",
+    "updatedAt": "2026-05-03T15:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Update README documentation",
+    "status": "todo",
+    "priority": "low",
     "dueDate": null,
-    "tags": [],
-    "createdAt": "2024-01-15T11:00:00.000Z",
-    "updatedAt": "2026-05-03T12:43:51.304Z"
+    "tags": [
+      "docs"
+    ],
+    "createdAt": "2026-05-02T08:00:00.000Z",
+    "updatedAt": "2026-05-02T08:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "title": "Fix bug in StatsPage pie chart",
+    "status": "in-progress",
+    "priority": "medium",
+    "dueDate": "2026-05-04T12:00:00.000Z",
+    "tags": [
+      "bug",
+      "frontend"
+    ],
+    "createdAt": "2026-05-03T09:00:00.000Z",
+    "updatedAt": "2026-05-03T10:30:00.000Z"
   },
   {
     "id": "a287586f-5f29-4b35-b4fb-857990d6403d",
