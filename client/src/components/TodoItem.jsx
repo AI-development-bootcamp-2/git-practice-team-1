@@ -4,6 +4,21 @@ import { api } from '../services/api';
 import { resolveInlineEdit } from '../utils/todoEditing';
 import { formatDueDate, isTodoOverdue } from '../utils/todoDates';
 
+const STATUS_OPTIONS = [
+  { value: 'todo', label: 'To Do' },
+  { value: 'in-progress', label: 'In Progress' },
+  { value: 'review', label: 'Review' },
+  { value: 'done', label: 'Done' }
+];
+
+function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
+  const [editing, setEditing] = useState(false);
+  const [draftTitle, setDraftTitle] = useState(todo.title);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setDraftTitle(todo.title);
+  }, [todo.title]);
 
 const STATUS_COLORS = {
   'todo': '#9e9e9e',
@@ -78,17 +93,30 @@ function StatusBadge({ status }) {
   );
 }
 
+    try {
+      const updatedTodo = await api.todos.update(todo.id, { title: result.title });
+      onTitleSaved(updatedTodo);
+      setEditing(false);
+    } finally {
+      setSaving(false);
+    }
+  };
 
 function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <div className={`todo-item ${todo.status === 'done' ? 'done' : ''}`}>
-      <button
-        className="toggle-btn"
-        onClick={() => onToggle(todo.id)}
-        aria-label={todo.status === 'done' ? 'Mark as pending' : 'Mark as done'}
+      <select
+        className="status-select"
+        value={todo.status || 'todo'}
+        onChange={(e) => onStatusChange(todo.id, e.target.value)}
+        aria-label={`Change status for ${todo.title}`}
       >
-        {todo.status === 'done' ? 'Done' : 'Open'}
-      </button>
+        {STATUS_OPTIONS.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
 
       <div className="todo-content">
         {editing ? (
@@ -119,7 +147,6 @@ function TodoItem({ todo, onToggle, onDelete }) {
           </span>
         )}
 
-        {/* PERSON6 INTEGRATION: Person 5 styling/filter changes in TodoItem should keep due-date and overdue rendering intact. */}
         {dueDateLabel && (
           <div className={`todo-due-date ${overdue ? 'overdue' : ''}`}>
             <span>Due: {dueDateLabel}</span>
@@ -134,7 +161,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
         onClick={() => onDelete(todo.id)}
         aria-label="Delete todo"
       >
-        Del
+        Delete
       </button>
     </div>
   );
