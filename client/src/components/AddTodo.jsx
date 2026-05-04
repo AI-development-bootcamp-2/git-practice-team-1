@@ -89,7 +89,8 @@ function AddTodo({ onAdd }) {
       <select
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
-        className="priority-select"
+        className="add-date-input"
+        aria-label="Priority"
       >
         <option value="low">Low Priority</option>
         <option value="medium">Medium Priority</option>
@@ -102,16 +103,6 @@ function AddTodo({ onAdd }) {
         className="add-date-input"
         aria-label="Due date"
       />
-      <select 
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-        className="add-input"
-        aria-label="Priority"
-      >
-        <option value="high">High</option>
-        <option value="medium">Medium</option>
-        <option value="low">Low</option>
-      </select>
       <input
         type="text"
         value={tagInput}
