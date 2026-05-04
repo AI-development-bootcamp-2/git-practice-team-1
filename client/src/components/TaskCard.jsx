@@ -54,28 +54,28 @@ function TaskCard({ todo, overlay = false, onPriorityChange }) {
 
       <div className="task-card-meta">
         {status && <StatusBadge status={status} />}
-        {!overlay && onPriorityChange ? (
-          <select
-            className={`priority-select priority-${priority || 'medium'}`}
-            value={priority || 'medium'}
-            onChange={(e) => onPriorityChange(todo.id, e.target.value)}
-            onPointerDown={(e) => e.stopPropagation()}
-            aria-label={`Change priority for ${title}`}
-          >
-            {PRIORITY_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-        ) : priority ? (
-          <span className={`priority-badge priority-${priority}`}>{priority}</span>
-        ) : null}
         {dueDate && (
           <span className="due-date">{formatDate(dueDate)}</span>
         )}
       </div>
 
-      {tags.length > 0 && (
+      {(priority || tags.length > 0) && (
         <div className="task-tags">
+          {priority && (!overlay && onPriorityChange ? (
+            <select
+              className={`priority-select priority-${priority}`}
+              value={priority}
+              onChange={(e) => onPriorityChange(todo.id, e.target.value)}
+              onPointerDown={(e) => e.stopPropagation()}
+              aria-label={`Change priority for ${title}`}
+            >
+              {PRIORITY_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          ) : (
+            <span className={`priority-badge priority-${priority}`}>{priority}</span>
+          ))}
           {tags.map((tag) => (
             <span key={tag} className="tag">{tag}</span>
           ))}
