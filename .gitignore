@@ -4,4 +4,9 @@ dist/
 .DS_Store
 *.log
 .vite/
+<<<<<<< HEAD
 PERSON6_LOCAL_PLAN.md
+=======
+person-4-tasks.md
+PERSON6_LOCAL_PLAN.md
+>>>>>>> 7a3c5337e363d79bffbed84b3b6e10c8dd15c34d

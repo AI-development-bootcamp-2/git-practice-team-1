@@ -36,9 +36,9 @@ export const api = {
 
     getById: (id) => fetchApi(`/todos/${id}`),
 
-    create: ({ title, dueDate = null }) => fetchApi('/todos', {
+    create: ({ title, dueDate = null, priority = 'medium', tags = [] }) => fetchApi('/todos', {
       method: 'POST',
-      body: JSON.stringify({ title, dueDate }),
+      body: JSON.stringify({ title, dueDate, priority, tags }),
     }),
 
     update: (id, updates) => fetchApi(`/todos/${id}`, {
@@ -50,6 +50,14 @@ export const api = {
     getStats: ({ from, to } = {}) => fetchApi(`/todos/stats${buildQuery({ from, to })}`),
 
     delete: (id) => fetchApi(`/todos/${id}`, {
+      method: 'DELETE',
+    }),
+
+    completeAll: () => fetchApi('/todos/complete-all', {
+      method: 'PATCH',
+    }),
+
+    deleteDone: () => fetchApi('/todos/done', {
       method: 'DELETE',
     }),
   },

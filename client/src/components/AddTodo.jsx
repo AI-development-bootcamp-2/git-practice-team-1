@@ -3,7 +3,25 @@ import { toDueDateIso } from '../utils/todoDates';
 
 function AddTodo({ onAdd }) {
   const [title, setTitle] = useState('');
+  const [priority, setPriority] = useState('medium');
   const [dueDate, setDueDate] = useState('');
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState([]);
+
+  const handleTagKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const tag = tagInput.trim();
+      if (tag) {
+        setTags([...tags, tag]);
+        setTagInput('');
+      }
+    }
+  };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,9 +29,14 @@ function AddTodo({ onAdd }) {
       onAdd({
         title: title.trim(),
         dueDate: toDueDateIso(dueDate),
+        priority,
+        tags,
       });
       setTitle('');
       setDueDate('');
+      setTags([]);
+      setTagInput('');
+      setPriority('medium');
     }
   };
 
@@ -33,7 +56,40 @@ function AddTodo({ onAdd }) {
         className="add-date-input"
         aria-label="Due date"
       />
-      {/* PERSON6 INTEGRATION: Person 4 changes in AddTodo may need to merge around this optional due-date field. */}
+      <select 
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+        className="add-input"
+        aria-label="Priority"
+      >
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <input
+        type="text"
+        value={tagInput}
+        onChange={(e) => setTagInput(e.target.value)}
+        onKeyDown={handleTagKeyDown}
+        placeholder="Add a tag and press Enter"
+        className="add-input"
+      />
+      {tags.length > 0 && (
+        <div className="tag-chips">
+          {tags.map((tag, i) => (
+            <span key={i} className="tag-chip">
+              {tag}
+              <button
+                type="button"
+                className="tag-chip-remove"
+                onClick={() => removeTag(i)}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
       <button type="submit" className="add-btn" disabled={!title.trim()}>
         Add
       </button>

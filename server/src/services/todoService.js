@@ -63,8 +63,8 @@ export const todoService = {
       id: crypto.randomUUID(),
       title: todoData.title,
       status: 'todo',
-      priority: 'medium',
-      tags: [],
+      priority: todoData.priority ?? 'medium',
+      tags: todoData.tags ?? [],
       dueDate: todoData.dueDate ?? null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -100,28 +100,35 @@ export const todoService = {
 
   getStats({ from, to } = {}) {
     // PERSON6 INTEGRATION: Stats filtering is based on createdAt range until Person 3's UI lands.
-    const todos = readTodos();
+    // Combined method: accepts optional from/to date range (Person 6) and returns byStatus/completionPercent/createdByDate (Person 3).
+    const allTodos = readTodos();
     const fromDate = normalizeBoundaryDate(from);
     const toDate = normalizeBoundaryDate(to, true);
 
-    const filteredTodos = todos.filter((todo) => {
+    const filteredTodos = allTodos.filter((todo) => {
       const createdAt = new Date(todo.createdAt);
-
-      if (fromDate && createdAt < fromDate) {
-        return false;
-      }
-
-      if (toDate && createdAt > toDate) {
-        return false;
-      }
-
+      if (fromDate && createdAt < fromDate) return false;
+      if (toDate && createdAt > toDate) return false;
       return true;
     });
 
+    const byStatus = { todo: 0, 'in-progress': 0, review: 0, done: 0 };
+    const createdByDate = {};
+    filteredTodos.forEach(todo => {
+      if (byStatus[todo.status] !== undefined) {
+        byStatus[todo.status]++;
+      }
+      const dateStr = todo.createdAt.split('T')[0];
+      createdByDate[dateStr] = (createdByDate[dateStr] || 0) + 1;
+    });
+
+    const total = filteredTodos.length;
+    const completionPercent = total > 0 ? Math.round((byStatus.done / total) * 100) : 0;
+
     return {
-      total: filteredTodos.length,
-      todo: filteredTodos.filter((todo) => todo.status === 'todo').length,
-      done: filteredTodos.filter((todo) => todo.status === 'done').length,
+      total,
+      todo: filteredTodos.filter((t) => t.status === 'todo').length,
+      done: filteredTodos.filter((t) => t.status === 'done').length,
       overdue: filteredTodos.filter((todo) => {
         if (!todo.dueDate || todo.status === 'done') {
           return false;
@@ -131,8 +138,27 @@ export const todoService = {
         const todayKey = toDateKey(new Date().toISOString());
         return dueDateKey && todayKey ? dueDateKey < todayKey : false;
       }).length,
+      byStatus,
+      completionPercent,
+      createdByDate,
       from: from ?? null,
       to: to ?? null,
     };
+  },
+
+  completeAll() {
+    const todos = readTodos();
+    const now = new Date().toISOString();
+    const updated = todos.map(todo => ({ ...todo, status: 'done', updatedAt: now }));
+    writeTodos(updated);
+    return updated;
+  },
+
+  deleteDone() {
+    const todos = readTodos();
+    const remaining = todos.filter(todo => todo.status !== 'done');
+    writeTodos(remaining);
+    return remaining;
+
   }
 };
