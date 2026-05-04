@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { resolveInlineEdit } from '../utils/todoEditing';
@@ -11,15 +10,6 @@ const STATUS_OPTIONS = [
   { value: 'done', label: 'Done' }
 ];
 
-function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
-  const [editing, setEditing] = useState(false);
-  const [draftTitle, setDraftTitle] = useState(todo.title);
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    setDraftTitle(todo.title);
-  }, [todo.title]);
-
 const STATUS_COLORS = {
   'todo': '#9e9e9e',
   'in-progress': '#2196f3',
@@ -28,6 +18,12 @@ const STATUS_COLORS = {
 };
 
 const TAG_COLORS = ['#6c63ff', '#e91e8c', '#00bcd4', '#43a047', '#fb8c00', '#e53935'];
+
+const PRIORITY_CONFIG = {
+  'high':   { icon: '!', color: '#f44336' },
+  'medium': { icon: '~', color: '#ffc107' },
+  'low':    { icon: '↓', color: '#9e9e9e' },
+};
 
 function TagChips({ tags }) {
   if (!tags || tags.length === 0) return null;
@@ -53,12 +49,6 @@ function TagChips({ tags }) {
   );
 }
 
-const PRIORITY_CONFIG = {
-  'high':   { icon: '!', color: '#f44336' },
-  'medium': { icon: '~', color: '#ffc107' },
-  'low':    { icon: '↓', color: '#9e9e9e' },
-};
-
 function PriorityIndicator({ priority }) {
   const config = PRIORITY_CONFIG[priority];
   if (!config) return null;
@@ -72,27 +62,32 @@ function PriorityIndicator({ priority }) {
   );
 }
 
-function StatusBadge({ status }) {
-  const color = STATUS_COLORS[status] || '#9e9e9e';
-  return (
-    <span
-      className="status-badge"
-      style={{
-        backgroundColor: color,
-        color: '#fff',
-        padding: '2px 8px',
-        borderRadius: '12px',
-        fontSize: '0.75rem',
-        fontWeight: 500,
-        textTransform: 'capitalize',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {status}
-    </span>
-  );
-}
+function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
+  const [editing, setEditing] = useState(false);
+  const [draftTitle, setDraftTitle] = useState(todo.title);
+  const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    setDraftTitle(todo.title);
+  }, [todo.title]);
+
+  const dueDateLabel = formatDueDate(todo.dueDate);
+  const overdue = isTodoOverdue(todo);
+
+  const startEditing = () => setEditing(true);
+
+  const cancelEditing = () => {
+    setDraftTitle(todo.title);
+    setEditing(false);
+  };
+
+  const saveTitle = async () => {
+    const result = resolveInlineEdit(todo.title, draftTitle);
+    if (result.action !== 'save') {
+      cancelEditing();
+      return;
+    }
+    setSaving(true);
     try {
       const updatedTodo = await api.todos.update(todo.id, { title: result.title });
       onTitleSaved(updatedTodo);
@@ -102,7 +97,6 @@ function StatusBadge({ status }) {
     }
   };
 
-function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <div className={`todo-item ${todo.status === 'done' ? 'done' : ''}`}>
       <select
@@ -124,17 +118,10 @@ function TodoItem({ todo, onToggle, onDelete }) {
             type="text"
             value={draftTitle}
             onChange={(e) => setDraftTitle(e.target.value)}
-            onBlur={() => {
-              void saveTitle();
-            }}
+            onBlur={() => { void saveTitle(); }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                void saveTitle();
-              }
-
-              if (e.key === 'Escape') {
-                cancelEditing();
-              }
+              if (e.key === 'Enter') void saveTitle();
+              if (e.key === 'Escape') cancelEditing();
             }}
             className="todo-edit-input"
             disabled={saving}
