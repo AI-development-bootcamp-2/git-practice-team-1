@@ -142,6 +142,8 @@ await runTest('api.todos.create sends title and dueDate in the request body', as
   assert.deepEqual(JSON.parse(calls[0].options.body), {
     title: 'Write tests',
     dueDate: '2026-05-10T00:00:00.000Z',
+    priority: 'medium',
+    tags: [],
   });
 });
 
@@ -162,6 +164,8 @@ await runTest('api.todos.create sends null dueDate when it is omitted', async ()
   assert.deepEqual(JSON.parse(calls[0].options.body), {
     title: 'No due date yet',
     dueDate: null,
+    priority: 'medium',
+    tags: [],
   });
 });
 

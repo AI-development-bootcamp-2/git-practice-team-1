@@ -19,50 +19,40 @@ const STATUS_COLORS = {
 
 const TAG_COLORS = ['#6c63ff', '#e91e8c', '#00bcd4', '#43a047', '#fb8c00', '#e53935'];
 
-const PRIORITY_CONFIG = {
-  'high':   { icon: '!', color: '#f44336' },
-  'medium': { icon: '~', color: '#ffc107' },
-  'low':    { icon: '↓', color: '#9e9e9e' },
+const PRIORITY_OPTIONS = [
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+];
+
+const PRIORITY_COLORS = {
+  'high':   { bg: '#fee2e2', color: '#dc2626' },
+  'medium': { bg: '#fef3c7', color: '#b45309' },
+  'low':    { bg: '#d1fae5', color: '#065f46' },
 };
 
-function TagChips({ tags }) {
-  if (!tags || tags.length === 0) return null;
-  return (
-    <div className="tag-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
-      {tags.map((tag, i) => (
-        <span
-          key={tag}
-          className="tag-chip"
-          style={{
-            backgroundColor: TAG_COLORS[i % TAG_COLORS.length],
-            color: '#fff',
-            padding: '2px 8px',
-            borderRadius: '12px',
-            fontSize: '0.72rem',
-            fontWeight: 500,
-          }}
-        >
-          {tag}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function PriorityIndicator({ priority }) {
-  const config = PRIORITY_CONFIG[priority];
-  if (!config) return null;
+function StatusBadge({ status }) {
+  const color = STATUS_COLORS[status] || '#9e9e9e';
   return (
     <span
-      style={{ color: config.color, fontWeight: 700, marginRight: '6px', fontSize: '0.9rem' }}
-      aria-label={`Priority: ${priority}`}
+      className="status-badge"
+      style={{
+        backgroundColor: color,
+        color: '#fff',
+        padding: '2px 8px',
+        borderRadius: '12px',
+        fontSize: '0.75rem',
+        fontWeight: 500,
+        textTransform: 'capitalize',
+        whiteSpace: 'nowrap',
+      }}
     >
-      {config.icon}
+      {status}
     </span>
   );
 }
 
-function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
+function TodoItem({ todo, onStatusChange, onPriorityChange, onDelete, onTitleSaved }) {
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(todo.title);
   const [saving, setSaving] = useState(false);
@@ -111,6 +101,18 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
           </option>
         ))}
       </select>
+      <select
+        className="status-select"
+        value={todo.priority || 'medium'}
+        onChange={(e) => onPriorityChange(todo.id, e.target.value)}
+        aria-label={`Change priority for ${todo.title}`}
+      >
+        {PRIORITY_OPTIONS.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
 
       <div className="todo-content">
         {editing ? (
@@ -129,7 +131,6 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
           />
         ) : (
           <span className="todo-title" onDoubleClick={startEditing} title="Double-click to edit">
-            <PriorityIndicator priority={todo.priority} />
             {todo.title}
           </span>
         )}
@@ -140,8 +141,23 @@ function TodoItem({ todo, onStatusChange, onDelete, onTitleSaved }) {
             {overdue && <span className="todo-overdue-badge">Overdue</span>}
           </div>
         )}
-        <TagChips tags={todo.tags} />
+        {(todo.priority || (todo.tags && todo.tags.length > 0)) && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+            {todo.priority && PRIORITY_COLORS[todo.priority] && (
+              <span style={{ backgroundColor: PRIORITY_COLORS[todo.priority].bg, color: PRIORITY_COLORS[todo.priority].color, padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 500, textTransform: 'capitalize' }}>
+                {todo.priority}
+              </span>
+            )}
+            {todo.tags && todo.tags.map((tag, i) => (
+              <span key={tag} style={{ backgroundColor: TAG_COLORS[i % TAG_COLORS.length], color: '#fff', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 500 }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
+
+      <StatusBadge status={todo.status} />
 
       <button
         className="delete-btn"

@@ -56,6 +56,15 @@ function App() {
     }
   };
 
+  const handlePriorityChange = async (id, newPriority) => {
+    try {
+      const updated = await api.todos.update(id, { priority: newPriority });
+      setTodos(todos.map(t => t.id === id ? updated : t));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleTitleSaved = (updatedTodo) => {
     setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   };
@@ -185,6 +194,7 @@ function App() {
                   // PERSON6 INTEGRATION: BoardView gets filtered todos; merge drag-and-drop status updates back into full app state.
                   <BoardView
                     todos={filteredTodos}
+                    onPriorityChange={handlePriorityChange}
                     onTodosChange={(updatedFilteredTodos) =>
                       setTodos((currentTodos) => {
                         const updatesById = new Map(
@@ -202,6 +212,7 @@ function App() {
                   <TodoList
                     todos={filteredTodos}
                     onStatusChange={handleStatusChange}
+                    onPriorityChange={handlePriorityChange}
                     onDelete={handleDelete}
                     onTitleSaved={handleTitleSaved}
                   />
